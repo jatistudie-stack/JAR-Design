@@ -52,7 +52,7 @@ import {
   deleteUser
 } from './services/db';
 
-const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
+const MAX_FILE_SIZE = 15 * 1024 * 1024; // 15MB
 
 const convertToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -313,7 +313,7 @@ const App: React.FC = () => {
 
   const processFile = (file: File) => {
     if (file.size > MAX_FILE_SIZE) {
-      setFormFileError('File too large (max 2MB)');
+      setFormFileError('File too large (max 15MB)');
       setFormFile(null);
     } else {
       setFormFileError('');
@@ -580,7 +580,7 @@ const App: React.FC = () => {
                   >
                     <div className={`w-12 h-12 rounded-full mx-auto mb-3 flex items-center justify-center ${formFile ? 'bg-brand-600 text-white' : 'bg-stone-100 text-stone-400'}`}>{formFile ? <FileText /> : <Upload />}</div>
                     <p className="text-sm font-bold text-stone-700">{formFile ? formFile.name : 'Click or Drag Reference Image'}</p>
-                    <p className="text-xs text-stone-400 mt-1">JPG, PNG, or PDF up to 2MB</p>
+                    <p className="text-xs text-stone-400 mt-1">JPG, PNG, or PDF up to 15MB</p>
                     <input type="file" onChange={handleReferenceFileChange} className="hidden" id="ref-file" accept="image/*,.pdf" />
                     <label htmlFor="ref-file" className="mt-4 inline-block px-4 py-2 text-xs font-bold text-brand-600 bg-brand-50 hover:bg-brand-100 rounded-lg cursor-pointer transition-colors">Browse Files</label>
                   </div>
