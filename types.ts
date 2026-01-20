@@ -14,6 +14,7 @@ export interface DesignRequest {
   resultFileName?: string;
   resultFileUrl?: string;
   designerName?: string;
+  requestorUsername?: string;
 }
 
 export type ViewState = 'LOGIN' | 'DASHBOARD';

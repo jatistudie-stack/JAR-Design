@@ -38,15 +38,25 @@ export const initDB = async (): Promise<void> => {
       )
     `);
 
-    // 2. Migration: Ensure designer_name exists (more robust check)
-    const checkColumn = await execute(`
+    // 2. Migration: Ensure designer_name and requestor_username exist
+    const checkDesignerColumn = await execute(`
       SELECT column_name 
       FROM information_schema.columns 
       WHERE table_name='design_requests' AND column_name='designer_name'
     `);
-    
-    if (checkColumn.length === 0) {
+
+    if (checkDesignerColumn.length === 0) {
       await execute('ALTER TABLE design_requests ADD COLUMN designer_name TEXT');
+    }
+
+    const checkRequestorColumn = await execute(`
+      SELECT column_name 
+      FROM information_schema.columns 
+      WHERE table_name='design_requests' AND column_name='requestor_username'
+    `);
+
+    if (checkRequestorColumn.length === 0) {
+      await execute('ALTER TABLE design_requests ADD COLUMN requestor_username TEXT');
     }
 
     // 3. Create Users Table
@@ -75,7 +85,7 @@ export const initDB = async (): Promise<void> => {
 
 export const loginUser = async (username: string, password: string): Promise<User | null> => {
   const rows = await execute(
-    'SELECT username, role, name FROM users WHERE username = $1 AND password = $2', 
+    'SELECT username, role, name FROM users WHERE username = $1 AND password = $2',
     [username, password]
   );
   if (rows && rows.length > 0) {
@@ -103,16 +113,17 @@ export const getAllRequests = async (): Promise<DesignRequest[]> => {
     createdAt: row.created_at,
     resultFileName: row.result_file_name,
     resultFileUrl: row.result_file_url,
-    designerName: row.designer_name
+    designerName: row.designer_name,
+    requestorUsername: row.requestor_username
   }));
 };
 
 export const insertRequest = async (req: DesignRequest) => {
   await execute(`
     INSERT INTO design_requests (
-      id, outlet_name, design_type, dimensions, elements, reference_url, status, created_at
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-  `, [req.id, req.outletName, req.designType, req.dimensions, req.elements, req.referenceUrl, req.status, req.createdAt]);
+      id, outlet_name, design_type, dimensions, elements, reference_url, status, created_at, requestor_username
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+  `, [req.id, req.outletName, req.designType, req.dimensions, req.elements, req.referenceUrl, req.status, req.createdAt, req.requestorUsername]);
 };
 
 export const updateRequest = async (req: DesignRequest) => {
