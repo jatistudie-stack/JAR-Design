@@ -552,266 +552,265 @@ const App: React.FC = () => {
             </div>
           </div>
         </div>
-        </div >
-  )
-}
+      )
+      }
 
-{/* Sidebar */ }
-<aside className={`fixed md:relative z-30 w-64 h-full bg-white border-r transform transition-transform md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} flex flex-col`}>
-  <div className="p-6 border-b flex items-center gap-3"><img src={logo} alt="JAR Portal" className="h-10 w-auto object-contain" /><span className="font-bold text-lg text-stone-900">JAR Portal</span></div>
-  <nav className="flex-1 p-4 space-y-1">
-    <button onClick={() => { setActiveTab('STATUS'); setIsSidebarOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all ${activeTab === 'STATUS' ? 'bg-brand-50 text-brand-700 font-bold' : 'text-stone-600 hover:bg-stone-50'}`}><LayoutDashboard className="w-5 h-5" />Dashboard</button>
-    <button onClick={() => { setActiveTab('HISTORY'); setIsSidebarOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all ${activeTab === 'HISTORY' ? 'bg-brand-50 text-brand-700 font-bold' : 'text-stone-600 hover:bg-stone-50'}`}><History className="w-5 h-5" />History</button>
-    <button onClick={() => { setActiveTab('NEW_REQUEST'); setEditingRequestId(null); setIsSidebarOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all ${activeTab === 'NEW_REQUEST' ? 'bg-brand-50 text-brand-700 font-bold' : 'text-stone-600 hover:bg-stone-50'}`}><PlusCircle className="w-5 h-5" />New Request</button>
-    {currentUser?.role === 'Admin' && (
-      <button onClick={() => { setActiveTab('USERS'); setIsSidebarOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all ${activeTab === 'USERS' ? 'bg-brand-50 text-brand-700 font-bold' : 'text-stone-600 hover:bg-stone-50'}`}><Users className="w-5 h-5" />Manage Users</button>
-    )}
-  </nav>
-  <div className="p-4 border-t bg-stone-50">
-    <div className="px-4 py-2 mb-2"><p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Logged in as</p><p className="text-sm font-bold text-stone-800 truncate">{currentUser?.name}</p></div>
-    <Button variant="ghost" fullWidth onClick={handleLogout} icon={<LogOut className="w-4 h-4" />} className="justify-start">Sign Out</Button>
-  </div>
-</aside>
+      {/* Sidebar */}
+      <aside className={`fixed md:relative z-30 w-64 h-full bg-white border-r transform transition-transform md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} flex flex-col`}>
+        <div className="p-6 border-b flex items-center gap-3"><img src={logo} alt="JAR Portal" className="h-10 w-auto object-contain" /><span className="font-bold text-lg text-stone-900">JAR Portal</span></div>
+        <nav className="flex-1 p-4 space-y-1">
+          <button onClick={() => { setActiveTab('STATUS'); setIsSidebarOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all ${activeTab === 'STATUS' ? 'bg-brand-50 text-brand-700 font-bold' : 'text-stone-600 hover:bg-stone-50'}`}><LayoutDashboard className="w-5 h-5" />Dashboard</button>
+          <button onClick={() => { setActiveTab('HISTORY'); setIsSidebarOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all ${activeTab === 'HISTORY' ? 'bg-brand-50 text-brand-700 font-bold' : 'text-stone-600 hover:bg-stone-50'}`}><History className="w-5 h-5" />History</button>
+          <button onClick={() => { setActiveTab('NEW_REQUEST'); setEditingRequestId(null); setIsSidebarOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all ${activeTab === 'NEW_REQUEST' ? 'bg-brand-50 text-brand-700 font-bold' : 'text-stone-600 hover:bg-stone-50'}`}><PlusCircle className="w-5 h-5" />New Request</button>
+          {currentUser?.role === 'Admin' && (
+            <button onClick={() => { setActiveTab('USERS'); setIsSidebarOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all ${activeTab === 'USERS' ? 'bg-brand-50 text-brand-700 font-bold' : 'text-stone-600 hover:bg-stone-50'}`}><Users className="w-5 h-5" />Manage Users</button>
+          )}
+        </nav>
+        <div className="p-4 border-t bg-stone-50">
+          <div className="px-4 py-2 mb-2"><p className="text-xs font-bold text-stone-400 uppercase tracking-widest">Logged in as</p><p className="text-sm font-bold text-stone-800 truncate">{currentUser?.name}</p></div>
+          <Button variant="ghost" fullWidth onClick={handleLogout} icon={<LogOut className="w-4 h-4" />} className="justify-start">Sign Out</Button>
+        </div>
+      </aside>
 
-{/* Main Content */ }
-<main className="flex-1 overflow-y-auto h-full flex flex-col">
-  {/* Claim Confirmation Modal */}
-  {claimConfirmId && (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="bg-white p-6 rounded-2xl shadow-xl max-w-sm w-full text-center space-y-4 animate-in zoom-in-95">
-        <div className="w-12 h-12 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center mx-auto mb-2">
-          <Hand className="w-6 h-6" />
-        </div>
-        <div>
-          <h3 className="font-bold text-lg text-stone-900">Take this Job?</h3>
-          <p className="text-stone-500 text-sm mt-1">Status will change to "In Progress" and you will be assigned as the designer.</p>
-        </div>
-        <div className="flex gap-3 pt-2">
-          <Button variant="ghost" className="flex-1" onClick={() => setClaimConfirmId(null)}>Cancel</Button>
-          <Button className="flex-1" onClick={handleClaimRequest}>Confirm Take Job</Button>
-        </div>
-      </div>
-    </div>
-  )}
-
-  {/* Result Submission Modal */}
-  {resultSubmissionRequestId && (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full overflow-hidden animate-in zoom-in-95">
-        <div className="px-6 py-4 border-b flex justify-between items-center">
-          <h3 className="font-bold text-lg text-stone-900">Submit Design Result</h3>
-          <button onClick={() => setResultSubmissionRequestId(null)} className="p-2 hover:bg-stone-100 rounded-full text-stone-400"><X className="w-5 h-5" /></button>
-        </div>
-        <div className="p-6 space-y-6">
-          <div className="flex bg-stone-100 p-1 rounded-xl">
-            <button onClick={() => setActiveResultTab('UPLOAD')} className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${activeResultTab === 'UPLOAD' ? 'bg-white text-stone-900 shadow-sm' : 'text-stone-400 hover:text-stone-600'}`}>Upload File</button>
-            <button onClick={() => setActiveResultTab('LINK')} className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${activeResultTab === 'LINK' ? 'bg-white text-stone-900 shadow-sm' : 'text-stone-400 hover:text-stone-600'}`}>External Link</button>
-          </div>
-
-          {activeResultTab === 'UPLOAD' ? (
-            <div onClick={() => resultFileInputRef.current?.click()} className="border-2 border-dashed border-stone-200 hover:border-brand-500 hover:bg-brand-50 rounded-2xl p-8 text-center cursor-pointer transition-all">
-              <Upload className="w-12 h-12 text-stone-300 mx-auto mb-3" />
-              <p className="font-bold text-stone-700">Click to Upload Result File</p>
-              <p className="text-xs text-stone-400 mt-1">JPG, PNG, PDF, PSD, AI up to 15MB</p>
+      {/* Main Content */}
+      <main className="flex-1 overflow-y-auto h-full flex flex-col">
+        {/* Claim Confirmation Modal */}
+        {claimConfirmId && (
+          <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+            <div className="bg-white p-6 rounded-2xl shadow-xl max-w-sm w-full text-center space-y-4 animate-in zoom-in-95">
+              <div className="w-12 h-12 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                <Hand className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="font-bold text-lg text-stone-900">Take this Job?</h3>
+                <p className="text-stone-500 text-sm mt-1">Status will change to "In Progress" and you will be assigned as the designer.</p>
+              </div>
+              <div className="flex gap-3 pt-2">
+                <Button variant="ghost" className="flex-1" onClick={() => setClaimConfirmId(null)}>Cancel</Button>
+                <Button className="flex-1" onClick={handleClaimRequest}>Confirm Take Job</Button>
+              </div>
             </div>
-          ) : (
-            <div className="space-y-4">
-              <Input label="Google Drive / Dropbox Link" value={resultLink} onChange={e => setResultLink(e.target.value)} placeholder="https://..." />
-              <div className="p-3 bg-blue-50 text-blue-700 text-xs rounded-lg flex gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0" />
-                Make sure the link is accessible (Public or Shared with Client).
+          </div>
+        )}
+
+        {/* Result Submission Modal */}
+        {resultSubmissionRequestId && (
+          <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+            <div className="bg-white rounded-2xl shadow-xl max-w-lg w-full overflow-hidden animate-in zoom-in-95">
+              <div className="px-6 py-4 border-b flex justify-between items-center">
+                <h3 className="font-bold text-lg text-stone-900">Submit Design Result</h3>
+                <button onClick={() => setResultSubmissionRequestId(null)} className="p-2 hover:bg-stone-100 rounded-full text-stone-400"><X className="w-5 h-5" /></button>
+              </div>
+              <div className="p-6 space-y-6">
+                <div className="flex bg-stone-100 p-1 rounded-xl">
+                  <button onClick={() => setActiveResultTab('UPLOAD')} className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${activeResultTab === 'UPLOAD' ? 'bg-white text-stone-900 shadow-sm' : 'text-stone-400 hover:text-stone-600'}`}>Upload File</button>
+                  <button onClick={() => setActiveResultTab('LINK')} className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${activeResultTab === 'LINK' ? 'bg-white text-stone-900 shadow-sm' : 'text-stone-400 hover:text-stone-600'}`}>External Link</button>
+                </div>
+
+                {activeResultTab === 'UPLOAD' ? (
+                  <div onClick={() => resultFileInputRef.current?.click()} className="border-2 border-dashed border-stone-200 hover:border-brand-500 hover:bg-brand-50 rounded-2xl p-8 text-center cursor-pointer transition-all">
+                    <Upload className="w-12 h-12 text-stone-300 mx-auto mb-3" />
+                    <p className="font-bold text-stone-700">Click to Upload Result File</p>
+                    <p className="text-xs text-stone-400 mt-1">JPG, PNG, PDF, PSD, AI up to 15MB</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <Input label="Google Drive / Dropbox Link" value={resultLink} onChange={e => setResultLink(e.target.value)} placeholder="https://..." />
+                    <div className="p-3 bg-blue-50 text-blue-700 text-xs rounded-lg flex gap-2">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      Make sure the link is accessible (Public or Shared with Client).
+                    </div>
+                  </div>
+                )}
+
+                <Button fullWidth onClick={handleSubmitResult} disabled={activeResultTab === 'LINK' && !resultLink}>
+                  {activeResultTab === 'UPLOAD' ? 'Select File & Submit' : 'Submit Link'}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <header className="bg-white border-b p-4 md:hidden flex justify-between items-center sticky top-0 z-20 shadow-sm"><button onClick={() => setIsSidebarOpen(true)} className="p-2 hover:bg-stone-100 rounded-lg"><MenuIcon /></button><span className="font-bold text-brand-600">JAR Design Hub</span><div className="w-8"></div></header>
+        <div className="p-4 md:p-8 max-w-6xl mx-auto w-full">
+
+          {/* Tab: Dashboard */}
+          {activeTab === 'STATUS' && (
+            <div className="space-y-6">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div><h1 className="text-3xl font-bold text-stone-900 tracking-tight">Design Requests</h1><p className="text-stone-500 font-medium">Real-time design queue management.</p></div>
+                <Button onClick={() => setActiveTab('NEW_REQUEST')} icon={<PlusCircle className="w-5 h-5" />}>New Request</Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="bg-white p-4 rounded-2xl border shadow-sm"><p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Total</p><p className="text-2xl font-bold text-stone-900">{userRequests.length}</p></div>
+                <div className="bg-white p-4 rounded-2xl border shadow-sm"><p className="text-[10px] font-bold text-yellow-600 uppercase tracking-widest">Pending</p><p className="text-2xl font-bold text-stone-900">{userRequests.filter(r => r.status === 'Pending').length}</p></div>
+                <div className="bg-white p-4 rounded-2xl border shadow-sm"><p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">In Progress</p><p className="text-2xl font-bold text-stone-900">{userRequests.filter(r => r.status === 'In Progress').length}</p></div>
+                <div className="bg-white p-4 rounded-2xl border shadow-sm"><p className="text-[10px] font-bold text-green-600 uppercase tracking-widest">Done</p><p className="text-2xl font-bold text-stone-900">{userRequests.filter(r => r.status === 'Done').length}</p></div>
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left">
+                    <thead className="bg-stone-50 border-b"><tr className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">
+                      <th className="px-6 py-4">Outlet / Mitra</th><th className="px-6 py-4">Type</th><th className="px-6 py-4">Designer</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th>
+                    </tr></thead>
+                    <tbody className="divide-y divide-stone-100">
+                      {filteredRequests.length === 0 ? (
+                        <tr><td colSpan={5} className="p-12 text-center text-stone-400 italic">No requests found...</td></tr>
+                      ) : filteredRequests.map(req => (
+                        <tr key={req.id} onClick={() => setSelectedRequest(req)} className="cursor-pointer hover:bg-brand-50/50 transition-colors group">
+                          <td className="px-6 py-4"><span className="block font-bold text-stone-900 group-hover:text-brand-600">{req.outletName}</span><span className="text-[10px] text-stone-400">{new Date(req.createdAt).toLocaleDateString()}</span></td>
+                          <td className="px-6 py-4 font-medium text-stone-700">{req.designType}</td>
+                          <td className="px-6 py-4"><div className="flex items-center gap-2">{req.designerName ? <><div className="w-6 h-6 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center text-[10px] font-bold">{req.designerName.charAt(0)}</div><span className="text-sm font-semibold">{req.designerName}</span></> : <span className="text-xs text-stone-400 italic">Unassigned</span>}</div></td>
+                          <td className="px-6 py-4"><Badge status={req.status} /></td>
+                          <td className="px-6 py-4" onClick={e => e.stopPropagation()}>
+                            <div className="flex gap-2 justify-end">
+                              {req.status === 'Pending' && currentUser?.role === 'Designer' && <button onClick={() => setClaimConfirmId(req.id)} className="px-3 py-1.5 bg-brand-600 text-white rounded-lg text-xs font-bold hover:bg-brand-700 shadow-sm">Ambil</button>}
+                              {req.status === 'In Progress' && currentUser?.role === 'Designer' && req.designerName === currentUser.name && <button onClick={() => { setResultSubmissionRequestId(req.id); setActiveResultTab('UPLOAD'); }} className="px-3 py-1.5 bg-green-600 text-white rounded-lg text-xs font-bold hover:bg-green-700">Finish</button>}
+                              {req.status === 'Pending' && ((currentUser?.role === 'User' && req.requestorUsername === currentUser.username) || currentUser?.role === 'Admin') && (
+                                <button onClick={(e) => { e.stopPropagation(); handleEditRequest(req); }} className="p-2 text-stone-400 hover:text-blue-600 transition-colors" title="Edit Request">
+                                  <Edit className="w-5 h-5" />
+                                </button>
+                              )}
+                              {currentUser?.role === 'Admin' && (
+                                <button onClick={(e) => { e.stopPropagation(); handleDeleteRequest(req.id); }} className="p-2 text-stone-400 hover:text-red-600 transition-colors" title="Delete Request">
+                                  <Trash2 className="w-5 h-5" />
+                                </button>
+                              )}
+                              <button onClick={() => setSelectedRequest(req)} className="p-2 text-stone-400 hover:text-brand-600 transition-colors"><Eye className="w-5 h-5" /></button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           )}
 
-          <Button fullWidth onClick={handleSubmitResult} disabled={activeResultTab === 'LINK' && !resultLink}>
-            {activeResultTab === 'UPLOAD' ? 'Select File & Submit' : 'Submit Link'}
-          </Button>
-        </div>
-      </div>
-    </div>
-  )}
+          {/* Tab: New Request */}
+          {activeTab === 'NEW_REQUEST' && (
+            <div className="max-w-2xl mx-auto space-y-6 animate-in slide-in-from-bottom-4 duration-300">
+              <div className="bg-white p-8 rounded-3xl shadow-sm border">
+                <div className="mb-8"><h1 className="text-2xl font-bold text-stone-900">{editingRequestId ? 'Edit Request' : 'Create New Request'}</h1><p className="text-stone-500 font-medium mt-1">Submit your design requirements to the team.</p></div>
+                <form onSubmit={handleRequestSubmit} className="space-y-6">
+                  <Input label="Outlet Name / Mitra" value={formData.outletName} onChange={e => setFormData({ ...formData, outletName: e.target.value })} placeholder="e.g. Kopi Kenangan - Mall Indonesia" required />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Select label="Design Modality" value={formData.designType} onChange={e => setFormData({ ...formData, designType: e.target.value as DesignType })} options={[{ value: 'Social Media', label: 'Social Media Content' }, { value: 'Banner', label: 'Spanduk / Banner' }, { value: 'Menu', label: 'Menu Catalog' }, { value: 'Flyer', label: 'Promotion Flyer' }]} />
+                    <Input label="Size / Dimensions" value={formData.dimensions} onChange={e => setFormData({ ...formData, dimensions: e.target.value })} placeholder="e.g. 1080x1080 or 2x1 meter" required />
+                  </div>
+                  <TextArea label="Design Elements & Copywriting" value={formData.elements} onChange={e => setFormData({ ...formData, elements: e.target.value })} placeholder="Describe colors, text content, logos, and special instructions..." rows={4} required />
 
-  <header className="bg-white border-b p-4 md:hidden flex justify-between items-center sticky top-0 z-20 shadow-sm"><button onClick={() => setIsSidebarOpen(true)} className="p-2 hover:bg-stone-100 rounded-lg"><MenuIcon /></button><span className="font-bold text-brand-600">JAR Design Hub</span><div className="w-8"></div></header>
-  <div className="p-4 md:p-8 max-w-6xl mx-auto w-full">
+                  <div
+                    onDragOver={e => { e.preventDefault(); setIsDragging(true); }}
+                    onDragLeave={() => setIsDragging(false)}
+                    onDrop={e => { e.preventDefault(); setIsDragging(false); if (e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]); }}
+                    className={`border-2 border-dashed p-8 rounded-2xl text-center transition-all ${isDragging ? 'bg-brand-50 border-brand-500 scale-[1.01]' : 'border-stone-200 hover:border-brand-300'}`}
+                  >
+                    <div className={`w-12 h-12 rounded-full mx-auto mb-3 flex items-center justify-center ${formFile ? 'bg-brand-600 text-white' : 'bg-stone-100 text-stone-400'}`}>{formFile ? <FileText /> : <Upload />}</div>
+                    <p className="text-sm font-bold text-stone-700">{formFile ? formFile.name : 'Click or Drag Reference Image'}</p>
+                    <p className="text-xs text-stone-400 mt-1">JPG, PNG, or PDF up to 15MB</p>
+                    <input type="file" onChange={handleReferenceFileChange} className="hidden" id="ref-file" accept="image/*,.pdf" />
+                    <label htmlFor="ref-file" className="mt-4 inline-block px-4 py-2 text-xs font-bold text-brand-600 bg-brand-50 hover:bg-brand-100 rounded-lg cursor-pointer transition-colors">Browse Files</label>
+                  </div>
 
-    {/* Tab: Dashboard */}
-    {activeTab === 'STATUS' && (
-      <div className="space-y-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div><h1 className="text-3xl font-bold text-stone-900 tracking-tight">Design Requests</h1><p className="text-stone-500 font-medium">Real-time design queue management.</p></div>
-          <Button onClick={() => setActiveTab('NEW_REQUEST')} icon={<PlusCircle className="w-5 h-5" />}>New Request</Button>
-        </div>
+                  <div className="relative">
+                    <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center"><span className="bg-white px-3 text-sm text-stone-400 font-medium">OR</span></div>
+                    <div className="border-t"></div>
+                  </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-white p-4 rounded-2xl border shadow-sm"><p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">Total</p><p className="text-2xl font-bold text-stone-900">{userRequests.length}</p></div>
-          <div className="bg-white p-4 rounded-2xl border shadow-sm"><p className="text-[10px] font-bold text-yellow-600 uppercase tracking-widest">Pending</p><p className="text-2xl font-bold text-stone-900">{userRequests.filter(r => r.status === 'Pending').length}</p></div>
-          <div className="bg-white p-4 rounded-2xl border shadow-sm"><p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">In Progress</p><p className="text-2xl font-bold text-stone-900">{userRequests.filter(r => r.status === 'In Progress').length}</p></div>
-          <div className="bg-white p-4 rounded-2xl border shadow-sm"><p className="text-[10px] font-bold text-green-600 uppercase tracking-widest">Done</p><p className="text-2xl font-bold text-stone-900">{userRequests.filter(r => r.status === 'Done').length}</p></div>
-        </div>
+                  <Input label="External Link (Google Drive / Dropbox)" value={formData.referenceUrl} onChange={e => setFormData({ ...formData, referenceUrl: e.target.value })} placeholder="https://drive.google.com/..." />
 
-        <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead className="bg-stone-50 border-b"><tr className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">
-                <th className="px-6 py-4">Outlet / Mitra</th><th className="px-6 py-4">Type</th><th className="px-6 py-4">Designer</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Actions</th>
-              </tr></thead>
-              <tbody className="divide-y divide-stone-100">
-                {filteredRequests.length === 0 ? (
-                  <tr><td colSpan={5} className="p-12 text-center text-stone-400 italic">No requests found...</td></tr>
-                ) : filteredRequests.map(req => (
-                  <tr key={req.id} onClick={() => setSelectedRequest(req)} className="cursor-pointer hover:bg-brand-50/50 transition-colors group">
-                    <td className="px-6 py-4"><span className="block font-bold text-stone-900 group-hover:text-brand-600">{req.outletName}</span><span className="text-[10px] text-stone-400">{new Date(req.createdAt).toLocaleDateString()}</span></td>
-                    <td className="px-6 py-4 font-medium text-stone-700">{req.designType}</td>
-                    <td className="px-6 py-4"><div className="flex items-center gap-2">{req.designerName ? <><div className="w-6 h-6 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center text-[10px] font-bold">{req.designerName.charAt(0)}</div><span className="text-sm font-semibold">{req.designerName}</span></> : <span className="text-xs text-stone-400 italic">Unassigned</span>}</div></td>
-                    <td className="px-6 py-4"><Badge status={req.status} /></td>
-                    <td className="px-6 py-4" onClick={e => e.stopPropagation()}>
-                      <div className="flex gap-2 justify-end">
-                        {req.status === 'Pending' && currentUser?.role === 'Designer' && <button onClick={() => setClaimConfirmId(req.id)} className="px-3 py-1.5 bg-brand-600 text-white rounded-lg text-xs font-bold hover:bg-brand-700 shadow-sm">Ambil</button>}
-                        {req.status === 'In Progress' && currentUser?.role === 'Designer' && req.designerName === currentUser.name && <button onClick={() => { setResultSubmissionRequestId(req.id); setActiveResultTab('UPLOAD'); }} className="px-3 py-1.5 bg-green-600 text-white rounded-lg text-xs font-bold hover:bg-green-700">Finish</button>}
-                        {req.status === 'Pending' && ((currentUser?.role === 'User' && req.requestorUsername === currentUser.username) || currentUser?.role === 'Admin') && (
-                          <button onClick={(e) => { e.stopPropagation(); handleEditRequest(req); }} className="p-2 text-stone-400 hover:text-blue-600 transition-colors" title="Edit Request">
-                            <Edit className="w-5 h-5" />
-                          </button>
-                        )}
-                        {currentUser?.role === 'Admin' && (
-                          <button onClick={(e) => { e.stopPropagation(); handleDeleteRequest(req.id); }} className="p-2 text-stone-400 hover:text-red-600 transition-colors" title="Delete Request">
-                            <Trash2 className="w-5 h-5" />
-                          </button>
-                        )}
-                        <button onClick={() => setSelectedRequest(req)} className="p-2 text-stone-400 hover:text-brand-600 transition-colors"><Eye className="w-5 h-5" /></button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    )}
-
-    {/* Tab: New Request */}
-    {activeTab === 'NEW_REQUEST' && (
-      <div className="max-w-2xl mx-auto space-y-6 animate-in slide-in-from-bottom-4 duration-300">
-        <div className="bg-white p-8 rounded-3xl shadow-sm border">
-          <div className="mb-8"><h1 className="text-2xl font-bold text-stone-900">{editingRequestId ? 'Edit Request' : 'Create New Request'}</h1><p className="text-stone-500 font-medium mt-1">Submit your design requirements to the team.</p></div>
-          <form onSubmit={handleRequestSubmit} className="space-y-6">
-            <Input label="Outlet Name / Mitra" value={formData.outletName} onChange={e => setFormData({ ...formData, outletName: e.target.value })} placeholder="e.g. Kopi Kenangan - Mall Indonesia" required />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Select label="Design Modality" value={formData.designType} onChange={e => setFormData({ ...formData, designType: e.target.value as DesignType })} options={[{ value: 'Social Media', label: 'Social Media Content' }, { value: 'Banner', label: 'Spanduk / Banner' }, { value: 'Menu', label: 'Menu Catalog' }, { value: 'Flyer', label: 'Promotion Flyer' }]} />
-              <Input label="Size / Dimensions" value={formData.dimensions} onChange={e => setFormData({ ...formData, dimensions: e.target.value })} placeholder="e.g. 1080x1080 or 2x1 meter" required />
-            </div>
-            <TextArea label="Design Elements & Copywriting" value={formData.elements} onChange={e => setFormData({ ...formData, elements: e.target.value })} placeholder="Describe colors, text content, logos, and special instructions..." rows={4} required />
-
-            <div
-              onDragOver={e => { e.preventDefault(); setIsDragging(true); }}
-              onDragLeave={() => setIsDragging(false)}
-              onDrop={e => { e.preventDefault(); setIsDragging(false); if (e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]); }}
-              className={`border-2 border-dashed p-8 rounded-2xl text-center transition-all ${isDragging ? 'bg-brand-50 border-brand-500 scale-[1.01]' : 'border-stone-200 hover:border-brand-300'}`}
-            >
-              <div className={`w-12 h-12 rounded-full mx-auto mb-3 flex items-center justify-center ${formFile ? 'bg-brand-600 text-white' : 'bg-stone-100 text-stone-400'}`}>{formFile ? <FileText /> : <Upload />}</div>
-              <p className="text-sm font-bold text-stone-700">{formFile ? formFile.name : 'Click or Drag Reference Image'}</p>
-              <p className="text-xs text-stone-400 mt-1">JPG, PNG, or PDF up to 15MB</p>
-              <input type="file" onChange={handleReferenceFileChange} className="hidden" id="ref-file" accept="image/*,.pdf" />
-              <label htmlFor="ref-file" className="mt-4 inline-block px-4 py-2 text-xs font-bold text-brand-600 bg-brand-50 hover:bg-brand-100 rounded-lg cursor-pointer transition-colors">Browse Files</label>
-            </div>
-
-            <div className="relative">
-              <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center"><span className="bg-white px-3 text-sm text-stone-400 font-medium">OR</span></div>
-              <div className="border-t"></div>
-            </div>
-
-            <Input label="External Link (Google Drive / Dropbox)" value={formData.referenceUrl} onChange={e => setFormData({ ...formData, referenceUrl: e.target.value })} placeholder="https://drive.google.com/..." />
-
-            <div className="flex gap-3 pt-6 border-t"><Button type="button" variant="ghost" onClick={handleCancelForm} className="flex-1">Cancel</Button><Button type="submit" disabled={isSubmitting} className="flex-1 shadow-lg shadow-brand-200">{isSubmitting ? 'Saving...' : 'Submit to Queue'}</Button></div>
-          </form>
-        </div>
-      </div>
-    )}
-
-    {/* Tab: History */}
-    {activeTab === 'HISTORY' && (
-      <div className="space-y-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div><h1 className="text-3xl font-bold text-stone-900 tracking-tight">Design History</h1><p className="text-stone-500 font-medium">Archive of all completed creative assets.</p></div>
-        </div>
-
-        <div className="bg-white p-6 rounded-2xl border flex flex-col md:flex-row gap-6 items-end shadow-sm">
-          <div className="flex-1 w-full space-y-2"><p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest px-1">Filter by Period</p><div className="flex gap-3"><input type="date" value={historyStartDate} onChange={e => setHistoryStartDate(e.target.value)} className="border border-stone-200 p-2.5 rounded-xl w-full focus:ring-2 focus:ring-brand-500 text-sm" /><input type="date" value={historyEndDate} onChange={e => setHistoryEndDate(e.target.value)} className="border border-stone-200 p-2.5 rounded-xl w-full focus:ring-2 focus:ring-brand-500 text-sm" /></div></div>
-          <Button variant="ghost" onClick={() => { setHistoryStartDate(''); setHistoryEndDate(''); setSearchQuery(''); }} icon={<ArrowRight className="w-4 h-4" />}>Reset Filter</Button>
-        </div>
-
-        <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead className="bg-stone-50 border-b"><tr className="text-[10px] font-bold text-stone-500 uppercase tracking-widest"><th className="px-6 py-4">Outlet</th><th className="px-6 py-4">Designer</th><th className="px-6 py-4">Finished At</th><th className="px-6 py-4 text-right">Preview Assets</th></tr></thead>
-              <tbody className="divide-y divide-stone-100">
-                {historyRequests.length === 0 ? (
-                  <tr><td colSpan={4} className="p-16 text-center text-stone-400 italic font-medium">No history recorded for this period...</td></tr>
-                ) : historyRequests.map(req => (
-                  <tr key={req.id} className="hover:bg-stone-50 transition-colors cursor-pointer" onClick={() => setSelectedRequest(req)}>
-                    <td className="px-6 py-4"><span className="block font-bold text-stone-900">{req.outletName}</span><span className="text-[10px] text-stone-400">{req.designType}</span></td>
-                    <td className="px-6 py-4"><span className="text-sm font-semibold text-stone-700">{req.designerName}</span></td>
-                    <td className="px-6 py-4"><span className="text-xs text-stone-500 font-medium">{new Date(req.createdAt).toLocaleDateString()}</span></td>
-                    <td className="px-6 py-4 text-right"><button onClick={(e) => { e.stopPropagation(); setSelectedRequest(req); }} className="text-xs font-bold text-brand-600 hover:text-brand-700 bg-brand-50 px-4 py-2 rounded-lg transition-all">View Details</button></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    )}
-    {/* Tab: Users (Admin Only) */}
-    {activeTab === 'USERS' && currentUser?.role === 'Admin' && (
-      <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-300">
-        <div><h1 className="text-3xl font-bold text-stone-900 tracking-tight">Manage Users</h1><p className="text-stone-500 font-medium">Create and manage system access.</p></div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Create User Form */}
-          <div className="md:col-span-1">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border space-y-4">
-              <h3 className="font-bold text-lg text-stone-900">Add New User</h3>
-              <form onSubmit={handleCreateUser} className="space-y-4">
-                <Input label="Full Name" value={newUserFormData.name} onChange={e => setNewUserFormData({ ...newUserFormData, name: e.target.value })} placeholder="e.g. John Doe" required />
-                <Input label="Username" value={newUserFormData.username} onChange={e => setNewUserFormData({ ...newUserFormData, username: e.target.value })} placeholder="e.g. johndoe" required />
-                <Input label="Password" type="password" value={newUserFormData.password} onChange={e => setNewUserFormData({ ...newUserFormData, password: e.target.value })} placeholder="••••••••" required />
-                <Select label="Role" value={newUserFormData.role} onChange={e => setNewUserFormData({ ...newUserFormData, role: e.target.value as UserRole })} options={[{ value: 'User', label: 'User (Client)' }, { value: 'Designer', label: 'Designer' }, { value: 'Admin', label: 'Admin' }]} />
-                <Button type="submit" fullWidth icon={<PlusCircle className="w-4 h-4" />}>Create User</Button>
-              </form>
-            </div>
-          </div>
-
-          {/* User List */}
-          <div className="md:col-span-2">
-            <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left">
-                  <thead className="bg-stone-50 border-b"><tr className="text-[10px] font-bold text-stone-500 uppercase tracking-widest"><th className="px-6 py-4">User</th><th className="px-6 py-4">Role</th><th className="px-6 py-4 text-right">Actions</th></tr></thead>
-                  <tbody className="divide-y divide-stone-100">
-                    {users.map(u => (
-                      <tr key={u.username} className="hover:bg-stone-50">
-                        <td className="px-6 py-4"><span className="block font-bold text-stone-900">{u.name}</span><span className="text-xs text-stone-400">@{u.username}</span></td>
-                        <td className="px-6 py-4"><span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${u.role === 'Admin' ? 'bg-purple-100 text-purple-800' : u.role === 'Designer' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}`}>{u.role}</span></td>
-                        <td className="px-6 py-4 text-right">
-                          {u.username !== currentUser.username && (
-                            <button onClick={() => handleDeleteUser(u.username)} className="p-2 text-stone-400 hover:text-red-600 transition-colors"><Trash2 className="w-4 h-4" /></button>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                  <div className="flex gap-3 pt-6 border-t"><Button type="button" variant="ghost" onClick={handleCancelForm} className="flex-1">Cancel</Button><Button type="submit" disabled={isSubmitting} className="flex-1 shadow-lg shadow-brand-200">{isSubmitting ? 'Saving...' : 'Submit to Queue'}</Button></div>
+                </form>
               </div>
             </div>
-          </div>
+          )}
+
+          {/* Tab: History */}
+          {activeTab === 'HISTORY' && (
+            <div className="space-y-6">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div><h1 className="text-3xl font-bold text-stone-900 tracking-tight">Design History</h1><p className="text-stone-500 font-medium">Archive of all completed creative assets.</p></div>
+              </div>
+
+              <div className="bg-white p-6 rounded-2xl border flex flex-col md:flex-row gap-6 items-end shadow-sm">
+                <div className="flex-1 w-full space-y-2"><p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest px-1">Filter by Period</p><div className="flex gap-3"><input type="date" value={historyStartDate} onChange={e => setHistoryStartDate(e.target.value)} className="border border-stone-200 p-2.5 rounded-xl w-full focus:ring-2 focus:ring-brand-500 text-sm" /><input type="date" value={historyEndDate} onChange={e => setHistoryEndDate(e.target.value)} className="border border-stone-200 p-2.5 rounded-xl w-full focus:ring-2 focus:ring-brand-500 text-sm" /></div></div>
+                <Button variant="ghost" onClick={() => { setHistoryStartDate(''); setHistoryEndDate(''); setSearchQuery(''); }} icon={<ArrowRight className="w-4 h-4" />}>Reset Filter</Button>
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left">
+                    <thead className="bg-stone-50 border-b"><tr className="text-[10px] font-bold text-stone-500 uppercase tracking-widest"><th className="px-6 py-4">Outlet</th><th className="px-6 py-4">Designer</th><th className="px-6 py-4">Finished At</th><th className="px-6 py-4 text-right">Preview Assets</th></tr></thead>
+                    <tbody className="divide-y divide-stone-100">
+                      {historyRequests.length === 0 ? (
+                        <tr><td colSpan={4} className="p-16 text-center text-stone-400 italic font-medium">No history recorded for this period...</td></tr>
+                      ) : historyRequests.map(req => (
+                        <tr key={req.id} className="hover:bg-stone-50 transition-colors cursor-pointer" onClick={() => setSelectedRequest(req)}>
+                          <td className="px-6 py-4"><span className="block font-bold text-stone-900">{req.outletName}</span><span className="text-[10px] text-stone-400">{req.designType}</span></td>
+                          <td className="px-6 py-4"><span className="text-sm font-semibold text-stone-700">{req.designerName}</span></td>
+                          <td className="px-6 py-4"><span className="text-xs text-stone-500 font-medium">{new Date(req.createdAt).toLocaleDateString()}</span></td>
+                          <td className="px-6 py-4 text-right"><button onClick={(e) => { e.stopPropagation(); setSelectedRequest(req); }} className="text-xs font-bold text-brand-600 hover:text-brand-700 bg-brand-50 px-4 py-2 rounded-lg transition-all">View Details</button></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* Tab: Users (Admin Only) */}
+          {activeTab === 'USERS' && currentUser?.role === 'Admin' && (
+            <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-300">
+              <div><h1 className="text-3xl font-bold text-stone-900 tracking-tight">Manage Users</h1><p className="text-stone-500 font-medium">Create and manage system access.</p></div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Create User Form */}
+                <div className="md:col-span-1">
+                  <div className="bg-white p-6 rounded-2xl shadow-sm border space-y-4">
+                    <h3 className="font-bold text-lg text-stone-900">Add New User</h3>
+                    <form onSubmit={handleCreateUser} className="space-y-4">
+                      <Input label="Full Name" value={newUserFormData.name} onChange={e => setNewUserFormData({ ...newUserFormData, name: e.target.value })} placeholder="e.g. John Doe" required />
+                      <Input label="Username" value={newUserFormData.username} onChange={e => setNewUserFormData({ ...newUserFormData, username: e.target.value })} placeholder="e.g. johndoe" required />
+                      <Input label="Password" type="password" value={newUserFormData.password} onChange={e => setNewUserFormData({ ...newUserFormData, password: e.target.value })} placeholder="••••••••" required />
+                      <Select label="Role" value={newUserFormData.role} onChange={e => setNewUserFormData({ ...newUserFormData, role: e.target.value as UserRole })} options={[{ value: 'User', label: 'User (Client)' }, { value: 'Designer', label: 'Designer' }, { value: 'Admin', label: 'Admin' }]} />
+                      <Button type="submit" fullWidth icon={<PlusCircle className="w-4 h-4" />}>Create User</Button>
+                    </form>
+                  </div>
+                </div>
+
+                {/* User List */}
+                <div className="md:col-span-2">
+                  <div className="bg-white rounded-2xl shadow-sm border overflow-hidden">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left">
+                        <thead className="bg-stone-50 border-b"><tr className="text-[10px] font-bold text-stone-500 uppercase tracking-widest"><th className="px-6 py-4">User</th><th className="px-6 py-4">Role</th><th className="px-6 py-4 text-right">Actions</th></tr></thead>
+                        <tbody className="divide-y divide-stone-100">
+                          {users.map(u => (
+                            <tr key={u.username} className="hover:bg-stone-50">
+                              <td className="px-6 py-4"><span className="block font-bold text-stone-900">{u.name}</span><span className="text-xs text-stone-400">@{u.username}</span></td>
+                              <td className="px-6 py-4"><span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${u.role === 'Admin' ? 'bg-purple-100 text-purple-800' : u.role === 'Designer' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}`}>{u.role}</span></td>
+                              <td className="px-6 py-4 text-right">
+                                {u.username !== currentUser.username && (
+                                  <button onClick={() => handleDeleteUser(u.username)} className="p-2 text-stone-400 hover:text-red-600 transition-colors"><Trash2 className="w-4 h-4" /></button>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-      </div>
-    )}
-  </div>
-</main>
-    </div >
+      </main>
+    </div>
   );
 };
 
