@@ -155,6 +155,14 @@ export const updateRequestResult = async (id: string, fileName: string, fileUrl:
   `, [fileName, fileUrl, id]);
 };
 
+export const updateRequestStatus = async (id: string, status: string) => {
+  await execute(`
+    UPDATE design_requests 
+    SET status = $1
+    WHERE id = $2
+  `, [status, id]);
+};
+
 export const getAllUsers = async (): Promise<User[]> => {
   const rows = await execute('SELECT username, role, name FROM users ORDER BY name ASC');
   if (!rows) return [];

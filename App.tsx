@@ -46,6 +46,7 @@ import {
   updateRequestResult,
   clearDB,
   assignDesignerToRequest,
+  updateRequestStatus,
   loginUser,
   getAllUsers,
   addUser,
@@ -504,7 +505,35 @@ const App: React.FC = () => {
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-200">
           <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col animate-in zoom-in-95 duration-200">
             <div className="px-6 py-4 border-b flex justify-between items-center bg-white sticky top-0">
-              <div className="flex gap-3 items-center"><Badge status={selectedRequest.status} /><h2 className="font-bold text-stone-900 truncate">{selectedRequest.outletName}</h2></div>
+              <div className="flex gap-3 items-center">
+                {(currentUser?.role === 'Admin' || currentUser?.role === 'Designer') ? (
+                  <select
+                    value={selectedRequest.status}
+                    onChange={async (e) => {
+                      const newStatus = e.target.value;
+                      try {
+                        await updateRequestStatus(selectedRequest.id, newStatus);
+                        await refreshRequests();
+                        setSelectedRequest({ ...selectedRequest, status: newStatus as any });
+                      } catch (err) {
+                        alert("Failed to update status");
+                      }
+                    }}
+                    className={`text-xs font-bold px-2 py-1 rounded-full border-0 cursor-pointer focus:ring-2 focus:ring-offset-1 transition-all outline-none appearance-none pr-8 relative ${selectedRequest.status === 'Done' ? 'bg-green-100 text-green-800' :
+                        selectedRequest.status === 'In Progress' ? 'bg-blue-100 text-blue-800' :
+                          'bg-yellow-100 text-yellow-800'
+                      }`}
+                    style={{ backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`, backgroundPosition: `right 0.2rem center`, backgroundRepeat: 'no-repeat', backgroundSize: '1.2em 1.2em' }}
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Done">Done</option>
+                  </select>
+                ) : (
+                  <Badge status={selectedRequest.status} />
+                )}
+                <h2 className="font-bold text-stone-900 truncate">{selectedRequest.outletName}</h2>
+              </div>
               <button onClick={() => setSelectedRequest(null)} className="p-2 hover:bg-stone-100 rounded-full text-stone-400 transition-colors"><X className="w-5 h-5" /></button>
             </div>
             <div className="flex-1 overflow-y-auto p-6 space-y-8">
